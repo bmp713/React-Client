@@ -1,4 +1,4 @@
-
+require("dotenv").config();
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,7 +8,6 @@ const port = 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-
 
 app.listen(port, () => { 
     console.log('Server listening on port', port) 
@@ -30,6 +29,7 @@ app.post("/email", (req, res) => {
     console.log("req.body =>", req.body);
 
     const sendGrid = require('@sendgrid/mail');
+    sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
 
     const message = {
         to: req.body.email, 
@@ -48,12 +48,6 @@ app.post("/email", (req, res) => {
         })
 
 });
-
-
-
-
-
-
 
  
 
