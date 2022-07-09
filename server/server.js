@@ -1,50 +1,59 @@
-const sendGrid = require('@sendgrid/mail');
-const express = require('express'); 
+
+const cors = require('cors');
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express(); 
 const port = 5000; 
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
 
-// reqest is input and res is response 
-app.get("/get", (req, res) => {
-    res.json({ message: "GET request message from express" });
-});
 
-app.post("/post", (req, res) => {
-    
-    //console.log("req.body => " req.body);
-    res.json({ message: `SendGrid email sent successfuly to ${message.to}` });
-
+app.listen(port, () => { 
+    console.log('Server listening on port', port) 
 });
 
 
+// GET request
+app.get("/", (req, res) => {
+});
 
-// SendGrid API
-app.get("/email", (req, res) => {
-    
-    //console.log("req => " req);
-    sendGrid.setApiKey("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");
+
+// GET request
+app.get("/users", (req, res) => {
+});
+
+
+// POST email to SendGrid API
+app.post("/email", (req, res) => {
+    console.log("req.body =>", req.body);
+
+    const sendGrid = require('@sendgrid/mail');
 
     const message = {
-        to: "bmp713@gmail.com", 
+        to: req.body.email, 
         from: 'bmp713@gmail.com', 
-        subject: 'Sending SendGrid API',
-        html: `This message was sent from <strong>NodeJS SendGrid API.</strong>`
+        subject: req.body.subject,
+        html: req.body.message
     }
 
     //Send email 
     sendGrid.send(message)
         .then((response) => {
-            console.log(response[0].statusCode)
+            console.log(response[0].statusCode);
+            console.log(`Email sent to ${message.to}`);
         }).catch((error) => {
             console.error("sgMail.send =>", error)
         })
 
-    res.json({ message: `SendGrid email sent successfuly to ${message.to}` });
-
 });
+
+
+
+
+
+
 
  
 

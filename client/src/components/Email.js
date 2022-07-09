@@ -7,139 +7,79 @@ import { db } from '../Firebase';
 import { storage } from '../Firebase';
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
+import axios from 'axios';
 import {UserContext} from '../contexts/UserContext';
 
-export default function Messages(){
+export default function Email(){
 
     // User authentication
     const {currentUser, login, logout } = useContext(UserContext);
     const [error, setError] = useState(false);
 
     const [formData, setFormData] = useState({
+        email: '',
+        subject: '',
         message: '',
-        imageURL: ''
     });
 
-    // const fileRef = useRef(null);
-    const [file, setFile] = useState("");
-    const [imageURL, setImageUrl] = useState(null);
-
-    useEffect(() => {
-    },[]);
-
-    const createMessage = async (e) => {
-
+    // POST email to express server
+    const sendGridEmail = async (e) => {
         e.preventDefault();
-        console.log("createMessage");
- 
-        // Add new message to database
-        let docRef;
-        try{
-            docRef = await addDoc( collection(db, 'messages'), {});
-            console.log('id => '+ docRef.id);
-        }catch(error){
-            console.log(error);
+
+        if( !formData.email || !formData.subject || !formData.email ) {
+            setError(true);
+            return;
         }
         try{
-            await setDoc( doc(db, 'messages', docRef.id.toString()), {
-                id: docRef.id,
-                email: currentUser.email,
-                first: currentUser.first,
-                last: currentUser.last,
-                message: formData.message,
-                userImg: currentUser.imgURL,
-                userID: currentUser.id,
-                imageURL: imageURL,
-                likes: 0
-            })
-
-        }catch(error){
-            console.log(error);
+            await fetch("http://localhost:5000/email", {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json' ,
+                },
+                body: JSON.stringify({
+                    email: formData.email, 
+                    subject: formData.subject, 
+                    message: `${formData.email} sending email`
+                })
+            });
+            console.log("formData =>" , formData);
+        }catch(err){
+            console.error(err);
         }
-    };  
-
-    // Delete message by message ID
-    const deleteMessage = async (id) => {
-        console.log('deleteDoc(id) => ' + id);
-
-        try{
-            await deleteDoc( doc(db, 'messages', id) );
-        }catch(error){
-            console.log(error);
-        }
-    };
-
-    // Edit message by message ID
-    const editMessage = async (id) => {
-        
-        let data = await doc( db, 'messages', id );
-        const docSnap = await getDoc(data);
-
-        try{
-            await setDoc( doc(db, 'messages', id ), {
-                id: docSnap.data().id,
-                email: docSnap.data().email,
-                first: docSnap.data().first,
-                last: docSnap.data().last,
-                message: formData.message,
-                userImg: docSnap.data().userImg,
-                userID: docSnap.data().userID,
-                imageURL: imageURL, 
-                likes: docSnap.data().likes
-            })
-        }catch(error){
-            console.log(error);
-        }
-    };
+    }
 
     return(
         <div 
-            className="messages row text-left align-items-center p-lg-5 p-4 my-2" 
-            style={{
-                // background:'linear-gradient(#2266ccaa,#000a), url("https://source.unsplash.com/random/?shadows") no-repeat', 
-                // background:'linear-gradient(#2266ccaa,#0000), url("./assets/10567.png")', 
-                background:'linear-gradient(#2266ccaa,#2266ccaa)', 
-                backgroundSize:'cover'
-            }}
+            className="messages row text-left align-items-center p-lg-5 p-4" 
+            style={{margin: "25px auto"}}
         >
-            <h2 className="mx-2">Email</h2>
-       
 
-            <div className="create text-left my-5">        
+            <div className="create text-left">        
                 <form id='form'>
-                    <h3 className="mx-1">Message</h3>
+                    <h3 className="mx-1">Send Email</h3>
+                    <input 
+                        value={formData.email} 
+                        onChange={ (event) => { 
+                            setFormData({...formData, email: event.target.value}) 
+                        }}    
+                        type="textarea" placeholder="Type mail"
+                    />
+                    <input 
+                        value={formData.subject} 
+                        onChange={ (event) => { 
+                            setFormData({...formData, subject: event.target.value}) 
+                        }}    
+                        type="textarea" placeholder="Type subject here"
+                    />
                     <input 
                         value={formData.message} 
                         onChange={ (event) => { 
                             setFormData({...formData, message: event.target.value}) 
-                        } }    
-                        type="textarea" placeholder="Type your message here"
+                        }}    
+                        type="textarea" placeholder="Type message here"
                     />
                     <input 
-                        className="hide"
-                        value={imageURL} 
-                        onChange={ (event) => { 
-                            setFormData({...formData, imageURL: event.target.value}) 
-                        } }    
-                        type="textarea" placeholder="Image URL"
-                    /><br></br>
-                    <input 
-                        onChange={ (e) => { 
-                            setFile( e.target.files[0] );
-                        }}    
-                        type="file"
-                    /><br></br>
-                    {file &&
-                        <div className="col-lg-12 text-left p-2">
-                            <img 
-                                onClick={ () => { setFile(null); setImageUrl(null); }}
-                                width="50%" src={imageURL} alt=""></img>
-                            <br></br>
-                            {imageURL}                            
-                        </div>
-                    }
-                    <input 
-                        onClick={createMessage}
+                        onClick={sendGridEmail}
                         className="submit-btn" type="submit" value="Send"
                     /><br></br>
                         { error ? <p className="text-danger mx-2"> Please enter a message</p> : '' }

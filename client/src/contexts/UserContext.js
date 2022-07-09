@@ -61,8 +61,6 @@ export const UserProvider = ( {children} ) => {
         console.log("sendGridEmail name =>", email);
     }
 
-
-
     // Read additional profile data from users db by id
     const readprofile = async (id) => {
         window.localStorage.setItem('currentUserID', JSON.stringify(id));

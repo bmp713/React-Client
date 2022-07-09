@@ -197,7 +197,7 @@ export default function Gallery(){
                                                 src="./assets/Icon-star-white.png" alt='new'/></a>
                                         </div>
                                         <div className="col-3 text-left">
-                                            <a id={image.id} href onClick={ (e)=>{ 
+                                            <a href id={image.id} onClick={ (e)=>{ 
                                                     if( image.id === e.currentTarget.id ){
                                                         setShowURL( !showURL);
                                                         setShowURL_ID( e.currentTarget.id );
