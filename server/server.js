@@ -31,7 +31,7 @@ app.get("/users", (req, res) => {
 });
 
 
-// GET NY Times top headlines
+// GET sends NY Times API headlines to React Social Media app News section 
 app.get("/news", async (req, res) => {
     let data;
     try{
@@ -52,8 +52,8 @@ app.get("/news", async (req, res) => {
 });
 
 
-// POST email to SendGrid API
-app.post("/email", (req, res) => {
+// POST sends email from React Social Media app through SendGrid API 
+app.post("/email", async (req, res) => {
     console.log("req.body =>", req.body);
 
     const sendGrid = require('@sendgrid/mail');
@@ -67,7 +67,7 @@ app.post("/email", (req, res) => {
     }
 
     //Send email 
-    sendGrid.send(message)
+    await sendGrid.send(message)
         .then((response) => {
             console.log(response[0].statusCode);
             console.log(`Email sent to ${message.to}`);
