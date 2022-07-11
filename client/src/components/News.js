@@ -42,12 +42,13 @@ export default function News(){
         url = "https://api.nytimes.com/svc/topstories/v2/us.json?api-key=l0pE8ZYsNeEx6MAKnAyKmNnxJrOhAfCB"
         url = "https://api.nytimes.com/svc/topstories/v2/technology.json?api-key=l0pE8ZYsNeEx6MAKnAyKmNnxJrOhAfCB"
         url = "https://api.nytimes.com/svc/news/v3/content/nyt/all.json?api-key=l0pE8ZYsNeEx6MAKnAyKmNnxJrOhAfCB";
-
+        
+        url = "https://node-react7-api.herokuapp.com/news";
         try{
             await fetch(url)
                 .then( response => response.json() )
                 .then( data => {
-                    console.log("NY Times data => ", data) 
+                    console.log("NY Times localhost data => ", data) 
 
                     setArticles(data.results);
                     setMaxArticles(data.num_results);

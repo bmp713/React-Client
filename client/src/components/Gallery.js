@@ -175,7 +175,7 @@ export default function Gallery(){
                             />
                             {currentUser.first} {currentUser.last}
                             <a 
-                                className="float-end" href
+                                className="float-end" href="true"
                                 onClick={ (e) => {
                                     console.log("Menu clicked =>", image.id);
                                     setShowMenu( !showMenu );
@@ -193,11 +193,11 @@ export default function Gallery(){
                             { showMenu ? '' :
                                     <div className="icons row justify-content-lg-left align-items-start">
                                         <div className="col-3 text-left">    
-                                            <a href><img height="15" className="mx-1" 
+                                            <a href="true"><img height="15" className="mx-1" 
                                                 src="./assets/Icon-star-white.png" alt='new'/></a>
                                         </div>
                                         <div className="col-3 text-left">
-                                            <a href id={image.id} onClick={ (e)=>{ 
+                                            <a href="true" id={image.id} onClick={ (e)=>{ 
                                                     if( image.id === e.currentTarget.id ){
                                                         setShowURL( !showURL);
                                                         setShowURL_ID( e.currentTarget.id );
@@ -216,7 +216,7 @@ export default function Gallery(){
                                             <button 
                                                 onClick={ () => { deleteImage(image.id) } } 
                                                 className="">
-                                                    <a href><img height="15" className="mx-1" src="./assets/Icon-trash-white.png" alt='new'/></a>
+                                                    <a href="true"><img height="15" className="mx-1" src="./assets/Icon-trash-white.png" alt='new'/></a>
                                             </button>
                                         </div>
                                     </div> 

@@ -50,7 +50,7 @@ export default function Messages(){
         );
         
         data.forEach( (message) => {
-            console.log("readMessages() message.data().userID =>",  message.data().userID );
+            //console.log("readMessages() message.data().userID =>",  message.data().userID );
             //console.log("IMAGE URL readUser =>", readUser( message.data().userID ) );
         });
 
@@ -246,7 +246,7 @@ export default function Messages(){
                         />
                         {message.first} {message.last} 
                         { currentUser.email === message.email && 
-                            <a href
+                            <a href="true"
                                 className="msgMenu float-end"
                                 id={message.id} 
                                 onClick={ (e) => { msgMenuClicked(e); }}
@@ -282,7 +282,7 @@ export default function Messages(){
                                         <input 
                                             className="hide"
                                             style={{margin:'0px'}}
-                                            value={formData.imageURR} 
+                                            value={formData.imageURL} 
                                             onChange={ function(event){ 
                                                 setFormData({...formData, imageURL: event.target.value}) 
                                             } }    
@@ -325,7 +325,7 @@ export default function Messages(){
                         <hr></hr>
                         <div className="icons row justify-content-lg-left align-items-start">
                             <div className="col-4 text-left">
-                                <a href
+                                <a href="true"
                                     id={message.id} 
                                         onClick={ (e) => {
                                             updateLikes(message.id);
@@ -340,12 +340,12 @@ export default function Messages(){
                                 </a>
                             </div>
                             <div className="col-4 text-left">
-                                <a href>
+                                <a href="true">
                                     <img height="20px" className="mx-1" src="./assets/Icon-share-black.png" alt='new'/>Share
                                 </a>
                             </div>
                             <div className="col-4 text-left">
-                                <a href>
+                                <a href="true">
                                     <img height="20px" className="mx-1" src="./assets/Icon-comment-black.png" alt='new'/>Comment
                                 </a>
                             </div>

@@ -6,8 +6,8 @@ import { doc, where, query, addDoc, setDoc, getDoc, getDocs, deleteDoc, collecti
 import { db } from '../Firebase';
 import { storage } from '../Firebase';
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-
 import axios from 'axios';
+
 import {UserContext} from '../contexts/UserContext';
 
 export default function Email(){
@@ -17,9 +17,9 @@ export default function Email(){
     const [error, setError] = useState(false);
 
     const [formData, setFormData] = useState({
-        email: '',
-        subject: '',
-        message: '',
+        email: 'bmp713@yahoo.com',
+        subject: 'Sendgrid email message',
+        message: 'Message sent by sendgrid API through Node.',
     });
 
     // POST email to express server
@@ -31,15 +31,18 @@ export default function Email(){
             return;
         }
         try{
-            await fetch("http://localhost:5000/email", {
+            let url = "http://localhost:5000/email";
+            url = "https://node-react7-api.herokuapp.com/email";
+            await fetch(url, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json' ,
                 },
                 body: JSON.stringify({
-                    email: formData.email, 
+                    email: formData.email,
+                    from: currentUser.email, 
                     subject: formData.subject, 
-                    message: `${formData.email} sending email`
+                    message: formData.message
                 })
             });
             console.log("formData =>" , formData);
@@ -53,34 +56,27 @@ export default function Email(){
             className="messages row text-left align-items-center p-lg-5 p-4" 
             style={{margin: "25px auto"}}
         >
-
             <div className="create text-left">        
                 <form id='form'>
                     <h3 className="mx-1">Send Email</h3>
                     <input 
                         value={formData.email} 
-                        onChange={ (event) => { 
-                            setFormData({...formData, email: event.target.value}) 
-                        }}    
-                        type="textarea" placeholder="Type mail"
+                        type="textarea" placeholder="Type recipient email"
+                        onChange={ event => setFormData({...formData, email: event.target.value}) }    
                     />
                     <input 
                         value={formData.subject} 
-                        onChange={ (event) => { 
-                            setFormData({...formData, subject: event.target.value}) 
-                        }}    
                         type="textarea" placeholder="Type subject here"
+                        onChange={ event => setFormData({...formData, subject: event.target.value}) }    
                     />
                     <input 
                         value={formData.message} 
-                        onChange={ (event) => { 
-                            setFormData({...formData, message: event.target.value}) 
-                        }}    
                         type="textarea" placeholder="Type message here"
+                        onChange={ event => setFormData({...formData, message: event.target.value}) }    
                     />
                     <input 
-                        onClick={sendGridEmail}
                         className="submit-btn" type="submit" value="Send"
+                        onClick={sendGridEmail}
                     /><br></br>
                         { error ? <p className="text-danger mx-2"> Please enter a message</p> : '' }
                 </form>

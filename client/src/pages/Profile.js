@@ -77,11 +77,13 @@ export default function Profile(){
                     <Friends/>
                     <Gallery/>
                     <Users/>
-                    {/* <News/> */}
                     <Email/>
+
+                    <News/>
                 </div>
                 <div className="col-lg-5 text-left my-lg-1">
                     <Messages/>
+
                     <Image/>
                 </div>
                 <div className="col-lg-5 text-left my-lg-1">
