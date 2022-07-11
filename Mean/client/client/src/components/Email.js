@@ -32,7 +32,9 @@ export default function Email(){
         }
         try{
             let url = "http://localhost:5000/email";
-            //url = "https://node-react7-api.herokuapp.com/email";
+            url = "https://node-react7-api.herokuapp.com/email";
+            
+            
             await fetch(url, {
                 method: 'POST',
                 headers: { 

@@ -42,8 +42,10 @@ export default function News(){
         url = "https://api.nytimes.com/svc/topstories/v2/us.json?api-key=l0pE8ZYsNeEx6MAKnAyKmNnxJrOhAfCB"
         url = "https://api.nytimes.com/svc/topstories/v2/technology.json?api-key=l0pE8ZYsNeEx6MAKnAyKmNnxJrOhAfCB"
         url = "https://api.nytimes.com/svc/news/v3/content/nyt/all.json?api-key=l0pE8ZYsNeEx6MAKnAyKmNnxJrOhAfCB";
+        
+        
         url = "http://localhost:5000/news"
-        //url = "https://node-react7-api.herokuapp.com/news";
+        url = "https://node-react7-api.herokuapp.com/news";
         try{
             await fetch(url)
                 .then( response => response.json() )
